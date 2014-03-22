@@ -20,52 +20,61 @@ void shifter(virtual_machine* vm){
     switch(vm->current_word->H){
         case 0x0:
             /* NSH */
+            zero_sign_control(vm->registers[vm->current_word->D], vm->registers[vm->current_word->D], vm->flags); 
             break;
 
         case 0x1:
             /* SHL */
-            vm->registers[vm->current_word->D] <<= 1; // shift left with input 0
+            current = vm->registers[vm->current_word->D];
+            temp = current << 1; // shift left with input 0
+            zero_sign_control(current, temp, vm->flags);
+            vm->registers[vm->current_word->D] = temp;
             break;
 
         case 0x2:
             /* SHR */
-            vm->registers[vm->current_word->D] >> 1; // shift right with input 0
+            current = vm->registers[vm->current_word->D];
+            temp = current >> 1; // shift left with input 0
+            zero_sign_control(current, temp, vm->flags);
+            vm->registers[vm->current_word->D] = temp;
             break;
 
         case 0x3:
             /* ZERO */
-            vm->registers[vm->current_word->D] = 0; // all zeros in output of shifter
+            vm->registers[vm->current_word->D] = 0; // all zeros in output of shifte
+            vm->flags->Z = 1;
             break;
 
         case 0x4:
             /* RLC */
             current = vm->registers[vm->current_word->D]; // current = D
-            temp = (unsigned char)(vm->registers[vm->current_word->D] & 0x8000); // temp = msb bit
-            current = (current << 1) + temp; // rotate left
-            vm->registers[vm->current_word->D] = current + vm->flags->C; // D = current + carry
+            temp = (current << 1) + ((unsigned char)(vm->registers[vm->current_word->D] & 0x8000));
+            temp += vm->flags->C;
+            zero_sign_control(current, temp, vm->flags);
+            vm->registers[vm->current_word->D] = temp;
             break;
 
         case 0x5:
             /* ROL */
             current = vm->registers[vm->current_word->D]; // current = D
-            temp = (unsigned char)(vm->registers[vm->current_word->D] & 0x8000); // temp = msb bit
-            current = (current << 1) + temp; // rotate left
+            temp = (current << 1) + ((unsigned char)(vm->registers[vm->current_word->D] & 0x8000));
+            zero_sign_control(current, temp,  vm->flags);
             vm->registers[vm->current_word->D] = current; // D = current
             break;
 
         case 0x6:
             /* ROR */
             current = vm->registers[vm->current_word->D]; // current = D
-            temp = (unsigned char)(vm->registers[vm->current_word->D] & 0x1) << 15; // temp = lsb bit
-            current = (current >> 1) + temp; // rotate right
+            temp = (current >> 1) + ((unsigned char)(vm->registers[vm->current_word->D] & 0x1) << 15);
+            zero_sign_control(current, temp,  vm->flags);
             vm->registers[vm->current_word->D] = current; // D = current
             break;
 
         case 0x7:
             /* RRC */
             current = vm->registers[vm->current_word->D]; // current = D
-            temp = (unsigned char)(vm->registers[vm->current_word->D] & 0x1) << 15; // temp = lsb bit
-            current = (current >> 1) + temp; // rotate right
+            temp = (current >> 1) + ((unsigned char)(current & 0x1) << 15);
+            zero_sign_control(current, temp, vm->flags);
             vm->registers[vm->current_word->D] = current + vm->flags->C; // D = current + carry
             break;
 

@@ -47,7 +47,7 @@ void process(virtual_machine* vm){
         case 1:
             /* INC */
             first_result = vm->registers[vm->current_word->A]; // first_result = A
-            last_result = first_result++; // last_result = first_result + 1
+            last_result = first_result + 1; // last_result = first_result + 1
             zero_sign_control(first_result, last_result, vm->flags); // update the flag status
             vm->registers[vm->current_word->D] = last_result; // D = result
             break;
@@ -79,7 +79,7 @@ void process(virtual_machine* vm){
         case 6:
             /* DEC */
             first_result = vm->registers[vm->current_word->A]; // first_result = A
-            last_result = first_result--;
+            last_result = first_result - 1;
             zero_sign_control(last_result, last_result, vm->flags); // Update the Z, S flags
             vm->registers[vm->current_word->D] = last_result; // D = result 
             break;
