@@ -1,7 +1,7 @@
 monovm
 ======
 
-Virtual machine for morris mono's book.
+Virtual machine for Morris Mano's book.
 
 ### Compile & Run & Clean
 
