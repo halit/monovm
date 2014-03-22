@@ -20,14 +20,12 @@ void shifter(virtual_machine* vm){
     switch(vm->current_word->H){
         case 0x0:
             /* NSH */
-            zero_sign_control(vm->registers[vm->current_word->D], vm->registers[vm->current_word->D], vm->flags); 
             break;
 
         case 0x1:
             /* SHL */
             current = vm->registers[vm->current_word->D];
             temp = current << 1; // shift left with input 0
-            zero_sign_control(current, temp, vm->flags);
             vm->registers[vm->current_word->D] = temp;
             break;
 
@@ -35,7 +33,6 @@ void shifter(virtual_machine* vm){
             /* SHR */
             current = vm->registers[vm->current_word->D];
             temp = current >> 1; // shift left with input 0
-            zero_sign_control(current, temp, vm->flags);
             vm->registers[vm->current_word->D] = temp;
             break;
 
@@ -49,33 +46,30 @@ void shifter(virtual_machine* vm){
             /* RLC */
             current = vm->registers[vm->current_word->D]; // current = D
             temp = (current << 1) + ((unsigned char)(vm->registers[vm->current_word->D] & 0x8000));
-            temp += vm->flags->C;
-            zero_sign_control(current, temp, vm->flags);
             vm->registers[vm->current_word->D] = temp;
+            vm->flags->C = (unsigned char)(vm->registers[vm->current_word->D] & 0x8000);
             break;
 
         case 0x5:
             /* ROL */
             current = vm->registers[vm->current_word->D]; // current = D
             temp = (current << 1) + ((unsigned char)(vm->registers[vm->current_word->D] & 0x8000));
-            zero_sign_control(current, temp,  vm->flags);
-            vm->registers[vm->current_word->D] = current; // D = current
+            vm->registers[vm->current_word->D] = temp; // D = current
             break;
 
         case 0x6:
             /* ROR */
             current = vm->registers[vm->current_word->D]; // current = D
             temp = (current >> 1) + ((unsigned char)(vm->registers[vm->current_word->D] & 0x1) << 15);
-            zero_sign_control(current, temp,  vm->flags);
-            vm->registers[vm->current_word->D] = current; // D = current
+            vm->registers[vm->current_word->D] = temp; // D = current
             break;
 
         case 0x7:
             /* RRC */
             current = vm->registers[vm->current_word->D]; // current = D
-            temp = (current >> 1) + ((unsigned char)(current & 0x1) << 15);
-            zero_sign_control(current, temp, vm->flags);
-            vm->registers[vm->current_word->D] = current + vm->flags->C; // D = current + carry
+            temp = ((current & 0x1) << 15) + (current >> 1);
+            vm->registers[vm->current_word->D] = temp + vm->flags->C; // D = current + carry
+            vm->flags->C = (unsigned char)(current & 0x1);
             break;
 
         default:

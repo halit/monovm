@@ -18,53 +18,54 @@
 
 void selector(virtual_machine* vm){
     switch(vm->select->MUX2){
-        case 0x0:
+        case 0:
             /* NEXT */
-            vm->car_counter++;
+            vm->car_counter += 1;
             break;
 
-        case 0x1:
+        case 1:
             /* LAD */
             vm->car_counter = vm->select->ADDRESS;
             break;
 
-        case 0x2:
+        case 2:
             /* LC */
             if(vm->flags->C) vm->car_counter = vm->select->ADDRESS;
-            else vm->car_counter++;
+            else vm->car_counter += 1;
             break;
 
-        case 0x3:
+        case 3:
             /* LNC */
             if(!vm->flags->C) vm->car_counter = vm->select->ADDRESS;
-            else vm->car_counter++;
+            else vm->car_counter += 1;
             break;
 
-        case 0x4:
+        case 4:
             /* LZ */
             if(vm->flags->Z) vm->car_counter = vm->select->ADDRESS;
-            else vm->car_counter++;
+            else vm->car_counter += 1;
             break;
 
-        case 0x5:
+        case 5:
             /* LNZ */
             if(!vm->flags->Z) vm->car_counter = vm->select->ADDRESS;
-            else vm->car_counter++;
+            else vm->car_counter += 1;
             break;
 
-        case 0x6:
+        case 6:
             /* LS */
             if(vm->flags->S) vm->car_counter = vm->select->ADDRESS;
-            else vm->car_counter++;
+            else vm->car_counter += 1;
             break;
 
-        case 0x7:
+        case 7:
             /* LC */
-            if(vm->flags->V) vm->car_counter = vm->select->ADDRESS;
-            else vm->car_counter++;
+            if(vm->flags->C) vm->car_counter = vm->select->ADDRESS;
+            else vm->car_counter += 1;
             break;
 
         default:
+            vm->car_counter += 1;
             break;
     }
 }

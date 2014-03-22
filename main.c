@@ -48,27 +48,26 @@ void second_example(virtual_machine* my_vm){
 }
 
 void third_example(virtual_machine* my_vm){
-    my_vm->registers[0b001] = 0b00110110;
+    my_vm->registers[0b001] = 0b00011110;
     Registers A, D;
 
-    D = make_register(R2, 0);
+    D = make_register(R3, 0);
     my_vm->car[0x0] = D | TSF | ZERO | NEXT;
 
     A = R1;
     D = make_register(R1, 0);
     my_vm->car[0x1] = A | D | TRC | NSH | NEXT;
 
-    my_vm->car[0x2] = D | TSF | NSH | EXT | LZ | 0x6;
+    my_vm->car[0x2] = TSF | NSH | EXT | LZ | 0x6;
     
     A = R1;
     D = make_register(R1, 0);
     my_vm->car[0x3] = A | D | TSF | RRC | NEXT;
-
-    my_vm->car[0x4] = D | TSF | NSH | INT | LNC | 0x3;
+    my_vm->car[0x4] = A | D | TSF | NSH | LNC | 0x3;
     
-    A = R2;
-    D = make_register(R2, 0);
-    my_vm->car[0x5] = A | D | INC | NSH | INT | LAD | 0x1;
+    A = R3;
+    D = make_register(R3, 0);
+    my_vm->car[0x5] = A | D | INC | NSH | LAD | 0x1;
 
     my_vm->car[0x6] = A | HLT;
 
@@ -77,6 +76,6 @@ void third_example(virtual_machine* my_vm){
 
 int main(){
     virtual_machine* my_vm = machine_init(8, 32);
-    second_example(my_vm);
+    third_example(my_vm);
 
 }
