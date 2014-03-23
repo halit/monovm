@@ -62,14 +62,28 @@ void decode(virtual_machine* vm, unsigned int cw){
     vm->current_word->H = (cw & 0x7);          // 0b0000000000000111
 }
 
-void execute(virtual_machine* vm){
+void execute(virtual_machine* vm, unsigned char flag){
     while(vm->flags->R){
         decode(vm, vm->car[vm->car_counter]);
         process(vm);
         shifter(vm);
         selector(vm);
-        debugger(vm);
+        if(flag) debugger(vm);
     }
+    cleaner(vm);
+}
+
+void printer(virtual_machine* vm, unsigned int i){
+    printf("# Register[%d]: %d\n", i, vm->registers[i]);
+}
+
+void cleaner(virtual_machine* vm){
+    free(vm->current_word);
+    free(vm->flags);
+    free(vm->select);
+    free(vm->registers);
+    free(vm->car);
+    free(vm);
 }
 
 void debugger(virtual_machine* vm){
