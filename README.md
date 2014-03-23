@@ -31,7 +31,7 @@ Virtual machine for Morris Mano's book.
         my_vm->registers[3] = 1; // fib(1) = 1
         my_vm->registers[4] = 0; // fib(n)
         
-        my_vm->car[0x0] = LZ  | 0x5;                     // if z == 1 goto: 5
+        my_vm->car[0x0] = LZ  | 0x5;                    // if z == 1 goto: 5
         my_vm->car[0x1] = RA2 | RD4 | TSF;              // R4 <- R2
         my_vm->car[0x2] = RA3 | RB2 | RD2 | ADD;        // R2 <- R2 + R3
         my_vm->car[0x3] = RA4 | RD3 | TSF;              // R3 <- R4
