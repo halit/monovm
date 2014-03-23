@@ -21,6 +21,7 @@ Virtual machine for Morris Mano's book.
   * **virtual_machine :** Base virtual machine struct
   * **virtual_machine->car[] :** Program memory
   * **execute:** Executer
+  * **debugger:** Debugger
 
 ### Fibonacci numbers(small version)
 
@@ -68,7 +69,7 @@ Virtual machine for Morris Mano's book.
     
         my_vm->car[0x6] = A | HLT; // Halt the machine
     
-        execute(my_vm); // Run the machine
+        execute(my_vm, 1); // Run the machine with output
     }
     
 ### Fibonacci numbers(old version)
@@ -100,5 +101,5 @@ Virtual machine for Morris Mano's book.
     
         my_vm->car[0x5] = HLT;
     
-        execute(my_vm);
+        execute(my_vm, 1);
     }
