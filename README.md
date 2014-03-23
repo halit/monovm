@@ -22,6 +22,26 @@ Virtual machine for Morris Mano's book.
   * **virtual_machine->car[] :** Program memory
   * **execute:** Executer
 
+### Fibonacci numbers(small version)
+
+    void another_fib_example(virtual_machine* my_vm){
+        my_vm->registers[1] = 6; // n + 1 = 6, n = 5
+        my_vm->registers[2] = 1; // fib(0) = 1
+        my_vm->registers[3] = 1; // fib(1) = 1
+        my_vm->registers[4] = 0; // fib(n)
+        
+        my_vm->car[0x0] = LZ  | 0x5;                     // if z == 1 goto: 5
+        my_vm->car[0x1] = RA2 | RD4 | TSF;              // R4 <- R2
+        my_vm->car[0x2] = RA3 | RB2 | RD2 | ADD;        // R2 <- R2 + R3
+        my_vm->car[0x3] = RA4 | RD3 | TSF;              // R3 <- R4
+        my_vm->car[0x4] = RA1 | RD1 | DEC | LAD | 0x0;  // R1 <- R1 - 1
+        my_vm->car[0x5] = HLT;                          // Halt the machine
+    
+        execute(my_vm, 0);                              // execute commands with no output
+        printer(my_vm, 4);                              // only print contains which register[4]
+    
+    }
+    
 ### Counting the number of 1's (Section 8-4 Example)
 
     void third_example(virtual_machine* my_vm){
@@ -51,7 +71,7 @@ Virtual machine for Morris Mano's book.
         execute(my_vm); // Run the machine
     }
     
-### Fibonacci numbers
+### Fibonacci numbers(old version)
     void fib_example(virtual_machine* my_vm){
         my_vm->registers[1] = 6; // n + 1 = 6, n = 5
         my_vm->registers[2] = 1; // fib(0) = 1
@@ -60,7 +80,7 @@ Virtual machine for Morris Mano's book.
     
         Registers A, B, D;
     
-        my_vm->car[0x0] = LZ | 0x5; // if z == 1 goto: 6
+        my_vm->car[0x0] = LZ | 0x5; // if z == 1 goto: 5
         A = R2;
         D = make_register(R4, 0);
         my_vm->car[0x1] = A | D | TSF; // R4 <- R2
