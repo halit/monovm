@@ -50,3 +50,35 @@ Virtual machine for Morris Mano's book.
     
         execute(my_vm); // Run the machine
     }
+    
+### Fibonacci numbers
+    void fib_example(virtual_machine* my_vm){
+        my_vm->registers[1] = 6; // n + 1 = 6, n = 5
+        my_vm->registers[2] = 1; // fib(0) = 1
+        my_vm->registers[3] = 1; // fib(1) = 1
+        my_vm->registers[4] = 0; // fib(n)
+    
+        Registers A, B, D;
+    
+        my_vm->car[0x0] = LZ | 0x5; // if z == 1 goto: 6
+        A = R2;
+        D = make_register(R4, 0);
+        my_vm->car[0x1] = A | D | TSF; // R4 <- R2
+    
+        A = R3;
+        B = make_register(R2, 1);
+        D = make_register(R2, 0);
+        my_vm->car[0x2] = A | B | D | ADD; // R2 <- R2 + R3
+    
+        A = R4;
+        D = make_register(R3, 0);
+        my_vm->car[0x3] = A | D | TSF; // R3 <- R4
+    
+        A = R1;
+        D = make_register(R1, 0);
+        my_vm->car[0x4] = A | D | DEC | LAD | 0x0; // R1 <- R1 - 1
+    
+        my_vm->car[0x5] = HLT;
+    
+        execute(my_vm);
+    }
