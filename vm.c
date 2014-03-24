@@ -70,7 +70,6 @@ void execute(virtual_machine* vm, unsigned char flag){
         selector(vm);
         if(flag) debugger(vm);
     }
-    cleaner(vm);
 }
 
 void printer(virtual_machine* vm, unsigned int i){
