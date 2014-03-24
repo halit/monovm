@@ -49,7 +49,7 @@ Virtual machine for Morris Mano's book.
         my_vm->registers[1] = 127;                      // R1 <- 127 or 0b1111111
     
         my_vm->car[0x0] = RD3 | TSF | ZERO;             // R3 <- 0
-        my_vm->car[0x1] = RA1 | RD1 | TRC;              // RA1 <- RA1 + C
+        my_vm->car[0x1] = RA1 | RD1 | TRC;              // RA1 <- RA1 and clear C flag
         my_vm->car[0x2] = LZ  | 0x6;                    // if Z == 1 goto:6
         my_vm->car[0x3] = RA1 | RD1 | RRC;              // R1 = R1 >> 1
         my_vm->car[0x4] = RA1 | RD1 | TSF | LNC | 0x3;  // if C == 0 goto 3 else R1 <- R1
